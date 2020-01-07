@@ -14,7 +14,7 @@ Later translated to OpenLaszlo JavaScript/XML on the Flash player.
 Now translated to TypeScript and playing in a web browser near you,
 courtesy of Svelt. (See "src/fasteroids.ts".)
 
-Adapted from Chris Hecker's 1996-1997 Game Developer Manazine articles
+Adapted from Chris Hecker's 1996-1997 Game Developer Magazine articles
 on 2D Rigid Body Dynamics:
 
 https://web.archive.org/web/20040615081248/http://www.d6.com/users/checker/dynamics.htm
