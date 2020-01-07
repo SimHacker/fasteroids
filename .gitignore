@@ -102,3 +102,12 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Other junk
+
+.DS_Store
+public/bundle.*
+package-lock.json
+yarn.lock
+.rpt2_cache
+*~

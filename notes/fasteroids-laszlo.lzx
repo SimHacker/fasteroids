@@ -1,0 +1,32 @@
+<canvas width="800" height="600">
+    <include href="dynamics.lzx"/>
+
+    <class name="randomship" extends="ship" width="10" height="10" resource="assets/ship.swf">
+        <method event="oninit">
+            this.setAttribute('x', Math.random() * canvas.width)
+            this.setAttribute('y', Math.random() * canvas.height)
+        </method>
+    </class>
+
+    <class name="randomasteroid" extends="asteroid" width="10" height="10" resource="assets/asteroid.swf">
+        <method event="oninit">
+            this.setAttribute('x', Math.random() * canvas.width)
+            this.setAttribute('y', Math.random() * canvas.height)
+        </method>
+    </class>
+    
+    <physicslayout rotate="true"/>
+
+    <randomship/>
+    <randomship/>
+    <randomship/>
+
+    <randomasteroid/>
+    <randomasteroid/>
+    <randomasteroid/>
+    <randomasteroid/>
+    <randomasteroid/>
+    <randomasteroid/>
+    <randomasteroid/>
+
+</canvas>

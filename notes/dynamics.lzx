@@ -1,0 +1,254 @@
+<library>
+    <node id="influence">
+        <attribute name="centerWeight" type="number" value="100"/>
+        <attribute name="avoidThresh" type="number" value="40"/>
+        <attribute name="avoidDampening" type="number" value="4"/>
+        <attribute name="matchDampening" type="number" value="8"/>
+        <attribute name="velocityLimit" type="number" value="24"/>
+        <attribute name="mouseWeight" type="number" value="200"/>
+        <attribute name="dampening" type="number" value=".9"/>
+
+        <method name="moveToCenter" args="b, blist"><![CDATA[
+        
+            // Calculate the percieved center of the flock from
+            // the perspective of b.
+            var i, cX, cY, dx, dy;
+            var sumX = 0;
+            var sumY = 0;
+            var num = 0;
+
+            // Go through each except b and and add the mass 		
+            for (i = 0; i < blist.length; i++) {
+                if (blist[i] != b && blist[i].visible){
+                    sumX += blist[i].x;
+                    sumY += blist[i].y;
+                    num++;
+                }
+            }
+            if (num < 1) return;
+
+            // Take the mean
+            cX = sumX / num;
+            cY = sumY / num;
+
+            // Now calculate the offset to move closer
+            //dx = (cX - b.x)/100;
+            //dy = (cY - b.y)/100;
+
+            var centerWeight = b.centerWeight != null ? b.centerWeight : influence.centerWeight;
+            
+            // Add this velocity
+            b.velocityX += (cX - b.x) / centerWeight;
+            b.velocityY += (cY - b.y) / centerWeight;
+        
+        ]]></method>
+
+        <method name="avoidOthers" args="b, blist"><![CDATA[
+        
+        	// Keep this boid away from others
+            var i, d, dx, dy;
+            var sX = 0;
+            var sY = 0;
+            
+            var avoidThresh = b.avoidThresh != null ? b.avoidThresh : influence.avoidThresh;
+            var avoidDampening = b.avoidDampening != null ? b.avoidDampening : influence.avoidDampening;
+
+            for (i = 0; i < blist.length; i++) {
+                if (blist[i] != b && blist[i].visible){
+                	dx = b.x - blist[i].x;
+                	dy = b.y - blist[i].y;
+
+                    d = Math.sqrt(dx*dx + dy*dy);
+
+                    if ((d < avoidThresh) && (d != 0)) { 
+                        sX += dx / avoidDampening;
+                        sY += dy / avoidDampening; 
+                    }
+                }
+            }
+
+            // Add this velocity
+            b.velocityX += sX;
+            b.velocityY += sY;
+        
+        ]]></method>
+        
+        <method name="matchVelocity" args="b, blist"><![CDATA[
+        
+        	// Match velocity with other nearby boids
+            // Calculate the percieved velocity of the flock
+            var i, cX, cY, dx, dy;
+            var sumX = 0;
+            var sumY = 0;
+            var num = 0;
+
+            // Go through each and and add the velocity except b		
+            for (i = 0; i < blist.length; i++) {
+                if (blist[i] != b && blist[i].visible){
+                    sumX += blist[i].velocityX;
+                    sumY += blist[i].velocityY;
+                    num++;
+                }
+            }
+
+            if (num < 1) return;
+            
+            // Take the mean
+            cX = sumX / num;
+            cY = sumY / num;
+            
+            // Now calculate the offset to move the boid closer
+            //dx = (cX - b.velocityX)/8;
+            //dy = (cY - b.velocityY)/8;
+            
+            var matchDampening = b.matchDampening != null ? b.matchDampening : influence.matchDampening;
+            // Add this velocity
+            b.velocityX += (cX - b.velocityX) / matchDampening;
+            b.velocityY += (cY - b.velocityY) / matchDampening;
+        
+        ]]></method>
+        
+        <method name="followMouse" args="b">
+            // Guide the boid toward the current mouse pointer
+            //var dx, dy;
+            
+            // Calculate the offset to move the boid closer
+            //dx = (b.parent.getMouse('x') - b.x)/20;
+            //dy = (b.parent.getMouse('y') - b.y)/20;
+            
+            // Scale this vector by a value determined by the mouse click
+            // before adding it.
+            //dx = 1 * dx;
+            //dy = 1 * dy;
+            
+            var mouseWeight = b.mouseWeight != null ? b.mouseWeight : influence.mouseWeight;
+            // Add this velocity
+            b.velocityX += (b.parent.getMouse('x') - b.x) / mouseWeight;
+            b.velocityY += (b.parent.getMouse('y') - b.y) / mouseWeight;
+        </method>
+
+        <method name="limitVelocity" args="b"><![CDATA[
+            // put the velocity within bounds so that boids
+            // never go to fast
+            var vx, vy, magV;
+            vx = b.velocityX;
+            vy = b.velocityY;
+            magV = Math.sqrt(vx*vx + vy*vy);
+
+            // Boids don't move more than velocityLimit pixels at a time
+            var velocityLimit = b.velocityLimit != null ? b.velocityLimit : influence.velocityLimit;
+
+            if (magV > velocityLimit) {
+                b.velocityX = (vx / magV) * velocityLimit;
+                b.velocityY = (vy / magV) * velocityLimit;
+            }
+        ]]></method>
+
+        <method name="boundPosition" args="b"><![CDATA[
+        
+            var boundBuffer = 20;
+            var xMax = canvas.width - boundBuffer;
+            var xMin = boundBuffer;
+            var yMax = canvas.height - boundBuffer;
+            var yMin = boundBuffer;
+            var boundFactor = 10;
+            
+            // Adjust X
+            if (b.x < xMin) {
+                b.velocityX += boundFactor;
+            } else if (b.x > xMax) {
+                b.velocityX -= boundFactor;
+            }
+            // Adjust Y
+            if (b.y < yMin) {
+                b.velocityY += boundFactor;
+            } else if (b.y > yMax) {
+                b.velocityY -= boundFactor;
+            }
+        
+        ]]></method>
+        
+        <method name="dampenVelocity" args="b">
+        
+            var dampening = b.dampening != null ? b.dampening : influence.dampening;
+            b.velocityX *= dampening;
+            b.velocityY *= dampening;
+        
+        </method>
+    </node>
+
+    <class name="particle">
+        <attribute name="size" type="number" value="${Math.max(this.width, this.height)}"/>
+        <attribute name="density" type="number" value="1"/>
+        <attribute name="mass" type="number" value="1.0"/>
+        <attribute name="massInverse" type="number" value="${1.0 / this.mass}"/>
+        <attribute name="moment" type="number" value="${(this.mass / 12.0) * ((this.width * this.width) + (this.height * this.height))}"/>
+        <attribute name="momentInverse" type="number" value="${1.0 / this.moment}"/>
+        <attribute name="orientation" type="number" value="0"/>
+        <attribute name="stationary" type="boolean" value="false"/>
+        <attribute name="velocityX" type="number" value="0"/>
+        <attribute name="velocityY" type="number" value="0"/>
+        <attribute name="angularVelocity" type="number" value="0"/>
+        <attribute name="forceX" type="number" value="0"/>
+        <attribute name="forceY" type="number" value="0"/>
+        <attribute name="torque" type="number" value="0"/>
+        <attribute name="restitution" type="number" value="1.0"/>
+        <attribute name="temperature" type="number" value="0.0"/>
+        <attribute name="influences" value="[]"/>
+        <method name="applyInfluences" args="vlist"><![CDATA[
+            for (var i = 0; this.influences.length > i; i++) {
+                this.influences[i](this, vlist);
+            }
+        ]]></method>
+    </class>
+    
+    <class name="physicslayout" extends="layout">
+        <attribute name="rotate" value="false"/>
+        <method event="onidle" reference="lzidle">
+            this.update();
+        </method>
+
+        <method name="update"><![CDATA[
+        
+            if ( this.locked ) return;
+            var l = this.subviews.length;
+
+            for (var i=0; i < l; i++) {
+                var s = this.subviews[i]; 
+                if (! s.visible || s.stationary) continue;
+                s.applyInfluences(this.subviews);
+
+                var x = (s.velocityX * s.mass) + s.x;
+                if ( s.x != x ){
+                    s.setAttribute('x' , x);
+                }
+
+                var y = (s.velocityY * s.mass) + s.y;
+                if ( s.y != y ){
+                    s.setAttribute('y' , y);
+                }
+
+                if (! this.rotate) continue;
+                var deg = Math.atan(s.velocityY / s.velocityY) * (180 / Math.PI);
+                if (s.velocityX < 0) deg += 180;
+                if ( s.rotation != deg ){
+                    s.setAttribute('rotation', deg);
+                }    
+            }    
+        
+        ]]></method>
+    </class>
+    
+    <class name="ship" extends="particle">
+        <attribute
+            name="influences" 
+            value="$once{[influence.moveToCenter, influence.avoidOthers, influence.matchVelocity, influence.followMouse, influence.limitVelocity, influence.boundPosition]}"/>
+    </class>
+
+    <class name="asteroid" extends="particle">
+        <attribute
+            name="influences"
+            value="$once{[influence.avoidOthers, influence.followMouse, influence.limitVelocity, influence.boundPosition]}"/>
+    </class>
+
+</library>
