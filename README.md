@@ -34,7 +34,19 @@ Adapted from
 
 ## From Wikipedia: [Chris Hecker's Articles](https://en.wikipedia.org/wiki/Chris_Hecker#Articles)
 
-During his time at Microsoft and Definition Six, Hecker wrote an influential programming column for Game Developer Magazine. Two series of articles from this column still serve today as standard references on their respective subjects. The first series was the first complete synthesis of perspectively-correct texture mapping and formed the mathematical basis for many important game rasterizers, including Michael Abrash's rasterizer for the 3D title Quake. The second was a series on rigid body dynamics simulation for games, complete with an extensive bibliography of rigid body dynamics resources. The articles were part of a general push by Hecker to incorporate more interactive physics into games, which at the time in 1996 rarely featured any physical simulation. In the summer of 1997, Hecker stepped down as author of the regular column to focus on game development full-time.
+During his time at Microsoft and Definition Six, Hecker wrote an
+influential programming column for Game Developer Magazine. Two series
+of articles from this column still serve today as standard references
+on their respective subjects. The first series was the first complete
+synthesis of perspectively-correct texture mapping and formed the
+mathematical basis for many important game rasterizers, including
+Michael Abrash's rasterizer for the 3D title Quake. The second was a
+series on rigid body dynamics simulation for games, complete with an
+extensive bibliography of rigid body dynamics resources. The articles
+were part of a general push by Hecker to incorporate more interactive
+physics into games, which at the time in 1996 rarely featured any
+physical simulation. In the summer of 1997, Hecker stepped down as
+author of the regular column to focus on game development full-time.
 
 ## [Physics, Part 1: The Next Frontier - Oct/Nov 96](http://www.chrishecker.com/images/d/df/Gdmphys1.pdf)
 

@@ -16,11 +16,12 @@
 </div>
 
 <canvas
-    class="fasteroids-canvas"
-	bind:this={canvas}
+  class="fasteroids-canvas"
+  bind:this={canvas}
 ></canvas>
 
 <style>
+
     .fasteroids-header {
         position: absolute;
         left: 0;
@@ -44,7 +45,7 @@
         font-size: 14px;
     }
 
-	.fasteroids-canvas {
+    .fasteroids-canvas {
         position: absolute;
         left: 0;
         right: 0;
@@ -52,12 +53,14 @@
         bottom: 0;
         width: auth;
         height: auto;
-		background-color: #000000;
+        background-color: #000000;
         z-index: 0;
-	}
+    }
+
 </style>
 
 <script lang="ts">
+
     import { onMount } from 'svelte';
     import { writable } from 'svelte/store';
     import Fasteroids from './Fasteroids';
@@ -67,20 +70,19 @@
     let height: number = 512;
     let fasteroids: Fasteroids | null = null;
 
-	onMount(() => {
+    onMount(() => {
 
         fasteroids = new Fasteroids();
         fasteroids.init(canvas);
 
         fasteroids.startGame();
 
-		return () => {
+        return () => {
             if (fasteroids !== null) {
-    			fasteroids.stopGame();
+                fasteroids.stopGame();
             }
-		};
+        };
 
-	});
+    });
 
 </script>
-

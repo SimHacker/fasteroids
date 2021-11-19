@@ -241,6 +241,8 @@ var app = (function () {
     ////////////////////////////////////////////////////////////////////////
     // Fasteroids.ts
     // By Don Hopkins.
+    ////////////////////////////////////////////////////////////////////////
+    // Class Fasteroids
     class Fasteroids {
         constructor() {
             ////////////////////////////////////////////////////////////////////////
@@ -1233,13 +1235,13 @@ var app = (function () {
     			a1.href = "https://medium.com/@donhopkins";
     			a1.target = "_new";
     			add_location(a1, file, 7, 4, 220);
-    			div0.className = "fasteroids-title svelte-5gwixx";
+    			div0.className = "fasteroids-title svelte-1mdkigb";
     			add_location(div0, file, 1, 2, 34);
-    			div1.className = "fasteroids-instructions svelte-5gwixx";
+    			div1.className = "fasteroids-instructions svelte-1mdkigb";
     			add_location(div1, file, 12, 2, 320);
-    			div2.className = "fasteroids-header svelte-5gwixx";
+    			div2.className = "fasteroids-header svelte-1mdkigb";
     			add_location(div2, file, 0, 0, 0);
-    			canvas_1.className = "fasteroids-canvas svelte-5gwixx";
+    			canvas_1.className = "fasteroids-canvas svelte-1mdkigb";
     			add_location(canvas_1, file, 17, 0, 487);
     		},
 
